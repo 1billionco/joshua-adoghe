@@ -1,0 +1,49 @@
+# Netlify configuration — Joshua Adoghe portfolio
+
+[build]
+  # No build step: dist/ is the finished site. Edit it, run sync_mirror.py, push.
+  publish = "dist"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  for = "/styles.css"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/portrait.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# Tidy up: send any stray .html link to its clean URL
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/work.html"
+  to = "/work/"
+  status = 301
+[[redirects]]
+  from = "/services.html"
+  to = "/services/"
+  status = 301
+[[redirects]]
+  from = "/about.html"
+  to = "/about/"
+  status = 301
+[[redirects]]
+  from = "/funnel-aether.html"
+  to = "/funnel-aether/"
+  status = 301
+[[redirects]]
+  from = "/contact.html"
+  to = "/contact/"
+  status = 301
