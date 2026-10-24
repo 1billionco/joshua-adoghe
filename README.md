@@ -5,7 +5,7 @@ Static site, deployed two ways from this one repo:
 | Folder  | Served by    | URL                                  |
 |---------|--------------|--------------------------------------|
 | `dist/` | Netlify      | https://joshuaadoghe.netlify.app     |
-| `docs/` | GitHub Pages | https://1billionco.github.io         |
+| `docs/` | GitHub Pages | https://1billionco.github.io/joshua-adoghe/ |
 
 `dist/` is the only copy you edit. `docs/` is generated from it.
 
@@ -33,6 +33,7 @@ Static site, deployed two ways from this one repo:
 
 - `docs/` has no `sitemap.xml`, and its `robots.txt` has no Sitemap line.
 - The contact form in `docs/` posts to the Netlify site, so every brief lands in Netlify Forms.
+- Links in `docs/` get the `/joshua-adoghe/` prefix, because GitHub serves the repo from that subfolder.
 - `docs/.nojekyll` makes GitHub serve the files as they are.
 
 Canonical URLs point at https://joshuaadoghe.netlify.app in both builds.

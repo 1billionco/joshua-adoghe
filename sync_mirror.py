@@ -9,20 +9,30 @@ docs/ is regenerated from scratch each time, with these differences kept:
   - robots.txt has no Sitemap line
   - the contact form posts to the Netlify site, so briefs sent from
     GitHub Pages still arrive in Netlify Forms
+  - site-root links (href="/...", src="/...") get the /joshua-adoghe/
+    prefix, because GitHub serves this repo as a project site at
+    https://1billionco.github.io/joshua-adoghe/
   - a .nojekyll file so GitHub serves the files as they are
 Canonical tags stay pointed at https://joshuaadoghe.netlify.app in both.
 """
 from pathlib import Path
+import re
 import shutil
 
 ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "dist"
 DST = ROOT / "docs"
 NETLIFY = "https://joshuaadoghe.netlify.app"
+BASE = "/joshua-adoghe/"
 SKIP = {"sitemap.xml", "netlify.toml", ".DS_Store"}
 
 FORM_LOCAL = 'action="/thanks/" data-netlify="true"'
 FORM_REMOTE = f'action="{NETLIFY}/thanks/" data-netlify="true"'
+ROOT_LINK = re.compile(r'((?:href|src|action)=")/(?!/)')
+
+
+def prefix_links(html):
+    return ROOT_LINK.sub(lambda m: m.group(1) + BASE, html)
 
 
 def main():
@@ -42,7 +52,9 @@ def main():
             html = src.read_text()
             if FORM_LOCAL not in html:
                 raise SystemExit("contact form markup changed: update FORM_LOCAL in sync_mirror.py")
-            out.write_text(html.replace(FORM_LOCAL, FORM_REMOTE))
+            out.write_text(prefix_links(html.replace(FORM_LOCAL, FORM_REMOTE)))
+        elif rel.suffix == ".html":
+            out.write_text(prefix_links(src.read_text()))
         else:
             shutil.copy2(src, out)
     (DST / ".nojekyll").write_text("")
